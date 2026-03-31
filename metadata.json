@@ -1,0 +1,5 @@
+{
+  "name": "BUZZ NEWS",
+  "description": "A modern, professional, and fully responsive news aggregator fetching real-time news from multiple RSS feeds and APIs.",
+  "requestFramePermissions": []
+}
