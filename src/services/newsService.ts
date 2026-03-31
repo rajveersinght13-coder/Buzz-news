@@ -10,9 +10,9 @@ interface CacheData {
   };
 }
 
-const GNEWS_API_KEY = process.env.GNEWS_API_KEY?.trim();
-const NEWSDATA_API_KEY = process.env.NEWSDATA_API_KEY?.trim();
-const NEWSAPI_KEY = process.env.NEWSAPI_KEY?.trim();
+const GNEWS_API_KEY = (import.meta.env.VITE_GNEWS_API_KEY || process.env.GNEWS_API_KEY)?.trim();
+const NEWSDATA_API_KEY = (import.meta.env.VITE_NEWSDATA_API_KEY || process.env.NEWSDATA_API_KEY)?.trim();
+const NEWSAPI_KEY = (import.meta.env.VITE_NEWSAPI_KEY || process.env.NEWSAPI_KEY)?.trim();
 
 // --- Helper: Fetch with Retry ---
 async function fetchWithRetry(url: string, options: RequestInit = {}, retries = 2): Promise<Response> {
@@ -56,7 +56,10 @@ export async function fetchNews(category: Category, forceRefresh = false, page =
   const feedPromises = feeds.map(async (feed) => {
     try {
       const response = await fetchWithRetry(`https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(feed)}&count=45&_=${Date.now()}`);
-      if (!response.ok) return [];
+      if (!response.ok) {
+        console.warn(`Feed failed: ${feed} (Status: ${response.status})`);
+        return [];
+      }
       
       const data = await response.json();
 
@@ -77,7 +80,7 @@ export async function fetchNews(category: Category, forceRefresh = false, page =
       }
       return [];
     } catch (error) {
-      // Silently skip failed feeds
+      console.error(`Error fetching feed ${feed}:`, error);
       return [];
     }
   });
