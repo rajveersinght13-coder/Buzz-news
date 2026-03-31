@@ -121,6 +121,11 @@ const Navbar = ({
   const scrollRef = React.useRef<HTMLDivElement>(null);
   const activeRef = React.useRef<HTMLButtonElement>(null);
 
+  const handleCategoryClick = (cat: Category) => {
+    setActiveCategory(cat);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   useEffect(() => {
     if (activeRef.current && scrollRef.current) {
       activeRef.current.scrollIntoView({
@@ -141,7 +146,7 @@ const Navbar = ({
         <div className="max-w-7xl mx-auto px-4">
           {/* Main Header Row */}
           <div className="flex items-center justify-between mb-2">
-            <div className="flex items-center gap-4 cursor-pointer group" onClick={() => setActiveCategory('General')}>
+            <div className="flex items-center gap-4 cursor-pointer group" onClick={() => handleCategoryClick('General')}>
               <Logo className="scale-[0.35] md:scale-[0.4] origin-left transition-transform group-hover:scale-[0.37] md:group-hover:scale-[0.42]" />
               <div className="flex flex-col">
                 <h1 className="text-base md:text-lg font-black tracking-tighter dark:text-white leading-none">BUZZ NEWS</h1>
@@ -212,7 +217,7 @@ const Navbar = ({
                 <button
                   key={cat}
                   ref={activeCategory === cat || (cat === 'State' && STATE_SUB_CATEGORIES.includes(activeCategory)) ? activeRef : null}
-                  onClick={() => setActiveCategory(cat)}
+                  onClick={() => handleCategoryClick(cat)}
                   className={cn(
                     "px-3 py-1.5 rounded-full text-[11px] md:text-xs font-bold whitespace-nowrap transition-all uppercase tracking-wider flex items-center gap-2",
                     activeCategory === cat || (cat === 'State' && STATE_SUB_CATEGORIES.includes(activeCategory))
@@ -239,7 +244,7 @@ const Navbar = ({
                     {STATE_SUB_CATEGORIES.map(sub => (
                       <button
                         key={sub}
-                        onClick={() => setActiveCategory(sub)}
+                        onClick={() => handleCategoryClick(sub)}
                         className={cn(
                           "px-3 py-1 rounded-full text-[10px] font-bold whitespace-nowrap transition-all border",
                           activeCategory === sub
@@ -618,7 +623,10 @@ function BuzzNews() {
                   <Bookmark className="w-8 h-8 text-red-600" /> Saved Stories
                 </h2>
                 <button 
-                  onClick={() => setShowBookmarks(false)}
+                  onClick={() => {
+                    setShowBookmarks(false);
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                  }}
                   className="text-red-600 font-bold hover:underline"
                 >
                   Back to Feed
@@ -755,7 +763,10 @@ function BuzzNews() {
         <div className="max-w-7xl mx-auto px-4">
           <div className="grid grid-cols-1 lg:grid-cols-8 gap-12 mb-20">
             <div className="lg:col-span-4">
-              <div className="flex items-center gap-3 mb-8 cursor-pointer" onClick={() => setActiveCategory('General')}>
+              <div className="flex items-center gap-3 mb-8 cursor-pointer" onClick={() => {
+                setActiveCategory('General');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+              }}>
                 <Logo className="scale-[0.5] origin-left" />
                 <h2 className="text-2xl font-black dark:text-white tracking-tighter">BUZZ NEWS</h2>
               </div>
@@ -788,7 +799,10 @@ function BuzzNews() {
                 {MAIN_CATEGORIES.slice(0, 6).map(cat => (
                   <li key={cat}>
                     <button 
-                      onClick={() => setActiveCategory(cat)} 
+                      onClick={() => {
+                        setActiveCategory(cat);
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                      }} 
                       className="text-slate-500 dark:text-slate-400 hover:text-red-600 text-sm font-medium transition-colors flex items-center gap-2 group"
                     >
                       <div className="w-1 h-1 bg-slate-300 dark:bg-slate-700 rounded-full group-hover:bg-red-600 transition-colors" />
